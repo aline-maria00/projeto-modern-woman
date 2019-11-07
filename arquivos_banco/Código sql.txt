@@ -1,0 +1,69 @@
+CREATE DATABASE `ModernWoman`;
+
+USE DATABASE `ModernWoman`;
+
+CREATE TABLE `Bairros` (
+  `ID_bairro` INT NOT NULL AUTO_INCREMENT,
+  `Bairro` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`ID_bairro`)
+);
+
+CREATE TABLE `Cidades` (
+  `ID_cidade` INT NOT NULL AUTO_INCREMENT,
+  `Cidade` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`ID_cidade`)
+);
+
+CREATE TABLE `Estados` (
+  `ID_estado` INT NOT NULL AUTO_INCREMENT,
+  `Estado` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`ID_estado`)
+);
+
+CREATE TABLE `Endereços` (
+  `ID_endereco` INT NOT NULL AUTO_INCREMENT,
+  `Logradouro` VARCHAR(45) NOT NULL,
+  `Número` VARCHAR(45) NOT NULL,
+  `BAI_ID_bairro` INT NOT NULL,
+  `CID_ID_cidade` INT NOT NULL,
+  `EST_ID_estado` INT NOT NULL,
+  PRIMARY KEY (`ID_endereco`),
+  FOREIGN KEY (`BAI_ID_bairro`)
+    REFERENCES `Bairros` (`ID_bairro`),
+  FOREIGN KEY (`CID_ID_cidade`)
+    REFERENCES `Cidades` (`ID_cidade`),
+  FOREIGN KEY (`EST_ID_estado`)
+    REFERENCES `Estados` (`ID_estado`)
+);
+
+CREATE TABLE `Funcionários` (
+  `ID_funcionario` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `CPF` VARCHAR(14) NOT NULL UNIQUE KEY,
+  `RG` VARCHAR(45) NOT NULL UNIQUE KEY,
+  `END_ID_endereco` INT NOT NULL,
+  PRIMARY KEY (`ID_funcionario`),
+  FOREIGN KEY (`END_ID_endereco`)
+    REFERENCES `Endereços` (`ID_endereco`)
+);
+
+CREATE TABLE `Telefones dos funcionarios` (
+  `Telefone` VARCHAR(20) NOT NULL UNIQUE KEY,
+  `FUN_ID_funcionario` INT NOT NULL,
+  FOREIGN KEY (`FUN_ID_funcionario`)
+    REFERENCES `Funcionários` (`ID_funcionario`)
+);
+
+CREATE TABLE `Emails dos funcionários` (
+  `Email` VARCHAR(45) NOT NULL,
+  `FUN_ID_funcionario` INT NOT NULL,
+  FOREIGN KEY (`FUN_ID_funcionario`)
+    REFERENCES `Funcionários` (`ID_funcionario`)
+);
+
+CREATE TABLE `Gerentes` (
+  `Senha` VARCHAR(45),
+  `FUN_ID_funcionario` INT NOT NULL,
+  FOREIGN KEY (`FUN_ID_funcionario`)
+    REFERENCES `Funcionários` (`ID_funcionario`)
+);
